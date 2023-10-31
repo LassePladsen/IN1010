@@ -1,4 +1,3 @@
-package src;
 public class Rutenett {
     public int antRader;
     public int antKolonner;

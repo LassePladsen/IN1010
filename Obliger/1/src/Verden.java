@@ -1,5 +1,3 @@
-package com.oblig1;
-
 public class Verden {
     private Rutenett rutenett;
     public int genNr = 0;

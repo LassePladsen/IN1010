@@ -1,4 +1,3 @@
-package src;
 public class GameOfLife {
     public static void main(String[] args) {
         if (args.length != 3) {
