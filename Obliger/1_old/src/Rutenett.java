@@ -1,4 +1,5 @@
-class Rutenett {
+package src;
+public class Rutenett {
     public int antRader;
     public int antKolonner;
     public Celle[][] rutene;

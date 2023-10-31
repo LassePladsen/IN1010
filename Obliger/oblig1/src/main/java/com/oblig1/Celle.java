@@ -1,5 +1,7 @@
+package com.oblig1;
+
 public class Celle {
-    public Celle[] naboer = new Celle[8];
+    private Celle[] naboer = new Celle[8];
     private int ledigIndeks = 0;  // neste ledige indeks for array naboer
     public int antNaboer = 0;
     public int antLevendeNaboer = 0;

@@ -1,3 +1,5 @@
+package com.oblig1;
+
 class TestRutenett {
     private static void sjekk (String hva, boolean test) {
 	if (! test) {

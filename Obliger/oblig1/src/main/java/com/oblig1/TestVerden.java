@@ -1,3 +1,5 @@
+package com.oblig1;
+
 class TestVerden {
     static void sjekk (String hva, boolean test) {
 	if (! test) {
@@ -37,9 +39,9 @@ class TestVerden {
     public static void main (String[] arg) {
 	System.out.println("** Test Verden **");
 
-	// testKonstruktoer();
-	// testTegn();
-	// testOppdatering();
+	testKonstruktoer();
+	testTegn();
+	testOppdatering();
 
 	System.out.println();
     }

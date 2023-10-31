@@ -1,4 +1,6 @@
-class Verden {
+package com.oblig1;
+
+public class Verden {
     private Rutenett rutenett;
     public int genNr = 0;
 
@@ -31,7 +33,7 @@ class Verden {
                 celle.oppdaterStatus();
             }
         }
-        
+
         genNr++;
     }
 

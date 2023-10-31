@@ -1,3 +1,4 @@
+package src;
 class TestCelle {
     private static void sjekk (String hva, boolean test) {
 	if (! test) {
