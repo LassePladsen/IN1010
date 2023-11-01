@@ -1,9 +1,14 @@
 Uke 1 
-alt
+ferdig
 
 Uke 2
-alt
+ferdig, droppa trix oppgaver
 
 Uke 3 
-Mangler oblig 1 
+ferdig, ikke gjort trix oppgaver
 
+Uke 4
+ferdig, ikke gjort trix oppgaver
+
+Uke 5
+Pensumstoff ferdig
