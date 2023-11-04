@@ -2,13 +2,16 @@ Uke 1
 ferdig
 
 Uke 2
-ferdig, droppa trix oppgaver
+ferdig
 
 Uke 3 
-ferdig, ikke gjort trix oppgaver
+ferdig
 
 Uke 4
-ferdig, ikke gjort trix oppgaver
+ferdig
 
 Uke 5
 Pensumstoff ferdig
+Trix oppgaver ferdig
+
+

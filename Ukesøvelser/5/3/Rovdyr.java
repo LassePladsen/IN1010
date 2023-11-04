@@ -1,0 +1,4 @@
+interface Rovdyr {
+    void jakt();
+}
+
