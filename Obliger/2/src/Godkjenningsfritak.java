@@ -1,0 +1,3 @@
+interface Godkjenningsfritak {
+    String hentKontrollkode();
+}

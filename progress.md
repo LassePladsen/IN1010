@@ -11,7 +11,6 @@ Uke 4
 ferdig
 
 Uke 5
-Pensumstoff ferdig
-Trix oppgaver ferdig
+ferdig
 
 

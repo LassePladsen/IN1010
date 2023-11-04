@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compile Java",
+            "type": "shell",
+            "command": "javac",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated"
+            },
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "args": [
+                "-d",
+                "${fileDirname}/../bin",
+                "*.java"
+            ]
+        }
+    ]
+}
