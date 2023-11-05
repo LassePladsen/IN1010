@@ -13,4 +13,10 @@ ferdig
 Uke 5
 ferdig
 
+Uke 6
+ferdig
+
+Uke 7
+oblig 3 : ferdig tom. F
+
 
