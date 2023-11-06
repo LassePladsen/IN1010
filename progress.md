@@ -17,6 +17,14 @@ Uke 6
 ferdig
 
 Uke 7
-oblig 3 : ferdig tom. F
+Ferdig
+
+Uke 8
+Stoff(repetisjon) ish sett gjennom
+Ikke gjort noe av den eksamen 2012 oppgaven 
+
+Uke 9 
+Ferdig med pensumstoff
+ferdig tom trix 10.03
 
 
