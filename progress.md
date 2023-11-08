@@ -25,6 +25,6 @@ Ikke gjort noe av den eksamen 2012 oppgaven
 
 Uke 9 
 Ferdig med pensumstoff
-ferdig tom trix 10.03
+ferdig tom trix 10.04
 
 
