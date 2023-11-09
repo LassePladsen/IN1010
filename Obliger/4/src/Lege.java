@@ -12,7 +12,8 @@ public class Lege implements Comparable<Lege> {
     
     @Override
     public String toString() {
-        return "Lege[" + "navn=" + navn + "]";
+        return "Lege[" + "navn=" + navn + ", antallUtskrevneResepter="
+        + utskrevneResepter.stoerrelse() + "]";
     }
     
     @Override

@@ -13,7 +13,8 @@ public class Spesialist extends Lege implements Godkjenningsfritak {
 
     @Override
     public String toString() {
-        return "Spesialist[" + super.toString() 
+        String superStreng = super.toString();
+        return "Spesialist[" + superStreng.substring(5, superStreng.length() - 1) 
         + ", kontrollkode=" + kontrollkode + "]";
     }
 

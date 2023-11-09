@@ -35,44 +35,46 @@ public class Main {
 
             switch (objektType) {
                 case "Pasienter":
-                    pasientListe.leggTil(new Pasient(verdier[0], verdier[1]));
+                    pasientListe.leggTil(new Pasient(
+                        verdier[0].trim(), verdier[1].trim()));
                     break;
 
                 case "Legemidler":
-                    navn = verdier[0];
-                    String type = verdier[1];
+                    navn = verdier[0].trim();
+                    String type = verdier[1].trim();
                     switch (type) {
                         case "narkotisk":
                             legemiddelListe.leggTil(new Narkotisk(
                                 navn,
-                                Integer.parseInt(verdier[2]), 
-                                Double.parseDouble(verdier[3]), 
-                                Integer.parseInt(verdier[4])
+                                Integer.parseInt(verdier[2].trim()), 
+                                Double.parseDouble(verdier[3].trim()), 
+                                Integer.parseInt(verdier[4].trim())
                             ));
                             break;
                         
                         case "vanedannende":
                             legemiddelListe.leggTil(new Vanedannende(
                                 navn,
-                                Integer.parseInt(verdier[2]), 
-                                Double.parseDouble(verdier[3]), 
-                                Integer.parseInt(verdier[4])
+                                Integer.parseInt(verdier[2].trim()), 
+                                Double.parseDouble(verdier[3].trim()), 
+                                Integer.parseInt(verdier[4].trim())
                             ));
                             break;
                         
                         case "vanlig":
                             legemiddelListe.leggTil(new Vanlig(
                                 navn,
-                                Integer.parseInt(verdier[2]), 
-                                Double.parseDouble(verdier[3]) 
+                                Integer.parseInt(verdier[2].trim()), 
+                                Double.parseDouble(verdier[3].trim()) 
                             ));
                             break;
                         
                         }
                     break;
                 case "Leger": 
-                    navn = verdier[0];
-                    String kontrollId = verdier[1];
+                    navn = verdier[0].trim();
+                    String kontrollId = verdier[1].trim();
+                    
                     // Kontrollid = 0 -> vanlig lege
                     if (kontrollId.equals("0")) {
                         legeListe.leggTil(new Lege(navn));
@@ -86,13 +88,14 @@ public class Main {
                 case "Resepter":
                     // Hent legemiddel fra legemiddelNummer
                     Legemiddel legemiddel = legemiddelListe.hent(
-                        Integer.parseInt(verdier[0])
+                        Integer.parseInt(verdier[0].trim())
                     );
 
                     // Hent riktig lege fra navn
                     Lege utskrivendeLege = null;
+                    navn = verdier[1].trim();
                     for (Lege lege : legeListe) {
-                        if (lege.hentNavn().equals(verdier[1])) {
+                        if (lege.hentNavn().equals(navn)) {
                             utskrivendeLege = lege;
                         }
                     }
@@ -103,16 +106,16 @@ public class Main {
                     }
 
                     // Hent pasient fra pasientId
-                    Pasient pasient = pasientListe.hent(Integer.parseInt(verdier[2]));
+                    Pasient pasient = pasientListe.hent(Integer.parseInt(verdier[2].trim()));
                     
                     // Match resepttype
-                    switch (verdier[3]) {
+                    switch (verdier[3].trim()) {
 
                         case "hvit":
                             reseptListe.leggTil(utskrivendeLege.skrivHvitResept(
                                 legemiddel, 
                                 pasient, 
-                                Integer.parseInt(verdier[4])
+                                Integer.parseInt(verdier[4].trim())
                             ));
                             break;
 
@@ -120,7 +123,7 @@ public class Main {
                             reseptListe.leggTil(utskrivendeLege.skrivBlaaResept(
                                 legemiddel, 
                                 pasient, 
-                                Integer.parseInt(verdier[4])
+                                Integer.parseInt(verdier[4].trim())
                             ));
                             break;
 
@@ -135,7 +138,7 @@ public class Main {
                             reseptListe.leggTil(utskrivendeLege.skrivPResept(
                                 legemiddel, 
                                 pasient, 
-                                Integer.parseInt(verdier[4])
+                                Integer.parseInt(verdier[4].trim())
                             ));
                             break;
                         }
@@ -149,8 +152,8 @@ public class Main {
         try {
             lesObjekterFraFil(new File("../data/legedata.txt"));
 
-            for (Legemiddel pas : legemiddelListe) {
-                System.out.println(pas);
+            for (Resept x : reseptListe) {
+                System.out.println(x);
             }
         }
         catch (FileNotFoundException | NameNotFoundException | UlovligUtskrift e) {
