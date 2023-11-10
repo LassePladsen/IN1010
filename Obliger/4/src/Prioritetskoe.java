@@ -9,14 +9,14 @@ public class Prioritetskoe<E extends Comparable<E>> extends Lenkeliste<E> {
         else if (stoerrelse == 1) {
             
             // nyData mindre enn eller lik eksisterende data -> sett som ny start
-            if (start.data.compareTo(nyData) >= 0) {
+            if (nyData.compareTo(start.data) <= 0) {
                 Node gammelStart = start;
                 start = new Node(nyData);
                 start.neste = gammelStart;
                 slutt = gammelStart;
             } 
             // nyData stoerre enn eksisterende data -> sett inn som slutt
-            else if (start.data.compareTo(nyData) < 0) {
+            else if (nyData.compareTo(start.data) > 0) {
                 start.neste = new Node(nyData);
                 slutt = start.neste;
             }
@@ -24,30 +24,27 @@ public class Prioritetskoe<E extends Comparable<E>> extends Lenkeliste<E> {
         
         else {
             Node node = start;
-            Node sisteNode = null;
+            Node forrigeNode = null;
             boolean funnet = false;
-            while (node.neste != null) {
-
-                // nyData mindre enn node -> sett inn foer node
-                if (node.data.compareTo(nyData) > 0) {
-                    Node gammelNode = node;
+            while (node != null) {
+                // nyData mindre enn eller lik node -> sett inn foer node
+                if (nyData.compareTo(node.data) <= 0) {
 
                     // nyData mindre enn start -> ny start
-                    if (sisteNode == null) {
+                    if (forrigeNode == null) {
                         start = new Node(nyData);
-                        start.neste = gammelNode;
+                        start.neste = node;
                     }
 
                     else {
-                        sisteNode.neste = new Node(nyData);
-                        sisteNode.neste.neste = gammelNode;
-                        if (gammelNode.neste == null) slutt = gammelNode;
+                        forrigeNode.neste = new Node(nyData);
+                        forrigeNode.neste.neste = node;
                     }
                     funnet = true;
                     break;
                 } 
                 
-                sisteNode = node;
+                forrigeNode = node;
                 node = node.neste;
             }
             

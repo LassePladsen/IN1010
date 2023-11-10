@@ -51,9 +51,6 @@ public class IndeksertListe<E> extends Lenkeliste<E> {
     }
     
     public E fjern(int pos) {
-        if (pos < 0 || pos >= stoerrelse) {
-            throw new UgyldigListeindeks(0);
-        } 
         Node node = hentNode(pos-1);
         E temp = node.neste.data;
         
@@ -63,8 +60,11 @@ public class IndeksertListe<E> extends Lenkeliste<E> {
     }
     
     protected Node hentNode(int pos) {
-        if (pos < 0 || pos >= stoerrelse) {
-            throw new UgyldigListeindeks(0);
+        if (pos == -1) {
+            pos = stoerrelse - 1;
+        }
+        else if (pos < -1 || pos >= stoerrelse) {
+            throw new UgyldigListeindeks(pos);
         } 
         Node node = start;
         int i = 0;

@@ -1,9 +1,9 @@
 abstract public class Resept {
-    protected final Legemiddel legemiddel;
-    protected final Lege utskrivendeLege;
-    protected final Pasient pasient;
-    protected final int id;
-    protected int reit;
+    private final Legemiddel legemiddel;
+    private final Lege utskrivendeLege;
+    private final Pasient pasient;
+    private final int id;
+    private int reit;
     
     private static int ledig_id;
 
@@ -37,7 +37,7 @@ abstract public class Resept {
         return pasient.hentId();
     }
 
-    public int henttReit() {
+    public int hentReit() {
         return reit;
     }
 

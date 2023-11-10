@@ -24,5 +24,6 @@ Stoff(repetisjon) ish sett gjennom
 Ikke gjort noe av den eksamen 2012 oppgaven 
 
 Uke 9 
-oblig 4 tom. del E1
+oblig 4 tom. del E2
+E3 progress er på linje 404 (oprette legemiddel narkotisk)
 
