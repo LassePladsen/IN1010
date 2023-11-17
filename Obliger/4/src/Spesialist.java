@@ -14,22 +14,19 @@ public class Spesialist extends Lege implements Godkjenningsfritak {
     @Override
     public String toString() {
         String superStreng = super.toString();
-        return "Spesialist[" + superStreng.substring(5, superStreng.length() - 1) 
-        + ", kontrollkode=" + kontrollkode + "]";
+        return "Spesialist["
+                + superStreng.substring(5, superStreng.length() - 1)
+                + ", kontrollkode=" + kontrollkode + "]";
     }
 
     @Override
-    public BlaaResept skrivBlaaResept(Legemiddel legemiddel, Pasient pasient, int reit) {
-            // Spesialist lege kan skrive ut narkotisk legemiddel
-            
-            BlaaResept ny = new BlaaResept(
-            legemiddel,
-            this,
-            pasient,
-            reit,
-            legemiddel.hentPris()
-            );
-            hentUtskrevneResepter().leggTil(ny);
-            return ny;
-        }
+    public BlaaResept skrivBlaaResept(Legemiddel legemiddel, Pasient pasient,
+            int reit) {
+        // Spesialist lege kan skrive ut narkotisk legemiddel for blaa resept
+
+        BlaaResept ny = new BlaaResept(legemiddel, this, pasient, reit,
+                legemiddel.hentPris());
+        hentUtskrevneResepter().leggTil(ny);
+        return ny;
+    }
 }
