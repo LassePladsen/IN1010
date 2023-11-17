@@ -155,32 +155,44 @@ public class Main {
             if (x instanceof Narkotisk) {
                 Narkotisk y = (Narkotisk) x;
                 System.out.println(y.hentId() + ": " + x.hentNavn()
-                        + " (virkestoff " + y.hentVirkestoff() + ", styrke "
-                        + y.hentStyrke() + ")");
+                        + " (narkotisk, virkestoff=" + y.hentVirkestoff()
+                        + ", styrke=" + y.hentStyrke() + ")");
             } else if (x instanceof Vanedannende) {
                 Vanedannende y = (Vanedannende) x;
                 System.out.println(y.hentId() + ": " + x.hentNavn()
-                        + " (virkestoff " + y.hentVirkestoff() + ", styrke "
-                        + y.hentStyrke() + ")");
-            } else {
+                        + " (vanedannende, virkestoff=" + y.hentVirkestoff()
+                        + ", styrke=" + y.hentStyrke() + ")");
+            } else if (x instanceof Vanlig) {
                 System.out.println(x.hentId() + ": " + x.hentNavn()
-                        + " (virkestoff " + x.hentVirkestoff() + ")");
+                        + " (vanlig, virkestoff=" + x.hentVirkestoff() + ")");
             }
         }
     }
 
     /* Skriver ut liste over alle leger i alfabetisk (leksikonsk) rekkefølge */
     private static void skrivUtLeger() {
+        int teller = 0;
         for (Lege x : legeListe) {
-            System.out.println(x.hentNavn());
+            System.out.println(teller + ": " + x.hentNavn());
+            teller++;
         }
     }
 
-    /* Skriver ut liste over alle resepter */
+    /* Skriver ut liste over alle resepter globalt */
     private static void skrivUtResepter() {
         for (Resept x : reseptListe) {
             System.out.println(x.hentId() + ": " + x.hentLegemiddel().hentNavn()
                     + " (" + x.hentReit() + " reit)");
+        }
+    }
+
+    /* Skriver ut liste over alle resepter FOR EN GITT PASIENT */
+    private static void skrivUtResepter(Pasient pasient) {
+        int teller = 0;
+        for (Resept x : pasient.hentReseptListe()) {
+            System.out.println(teller + ": " + x.hentLegemiddel().hentNavn()
+                    + " (" + x.hentReit() + " reit)");
+            teller++;
         }
     }
 
@@ -277,7 +289,7 @@ public class Main {
             }
 
         }
-        return true;
+        return false; // vanlige leger faar ikke godkjent
     }
 
     private static Legemiddel lagNyttLegemiddelLokke() {
@@ -434,8 +446,7 @@ public class Main {
 
         try {
             // LEGEMIDDEL
-            Legemiddel legemiddel = legemiddelListe.hent(0); // for aa
-            // initialisere;
+            Legemiddel legemiddel;
             while (true) {
                 System.out.println("Legemiddel for resept:");
                 System.out.println("0: Opprett nytt legemiddel");
@@ -449,24 +460,19 @@ public class Main {
                     legemiddel = lagNyttLegemiddelLokke();
                     break;
                 case 1: // 1: Hent eksisterende
-                    System.out.print("ID paa legemiddel > ");
-                    int id = skanInt();
+                    System.out.println("\nVelg legemiddel:");
+                    skrivUtLegemidler();
+                    System.out.print("> ");
+                    valg = skanInt();
 
-                    // Finn riktig legemiddel fra id:
-                    boolean funnet = false;
-                    for (Legemiddel lm : legemiddelListe) {
-                        if (lm.hentId() == id) {
-                            legemiddel = lm;
-                            funnet = true;
-                            break;
-                        }
+                    // Finn legemiddel fra indeks
+                    try {
+                        legemiddel = legemiddelListe.hent(valg);
                     }
 
-                    // Fant ikke legemiddel; gaa tilbake til forrige meny
-                    if (!funnet) {
-                        System.out.println("Fant ikke legemiddelet med id: "
-                                + id
-                                + ", sjekk at det er riktig ID eller lag et nytt legemiddel");
+                    // Fant ikke legemiddel fra indeks; proev igjen
+                    catch (UgyldigListeindeks e) {
+                        ugyldigInput();
                         continue;
                     }
                     break;
@@ -480,7 +486,7 @@ public class Main {
             }
 
             // LEGE
-            Lege lege = legeListe.hent(); // for aa initialisere
+            Lege lege = legeListe.hent(); // maa initialiseres for kompiler
             while (true) {
                 System.out.println("\nUtskrivende lege for resept:");
                 System.out.println("0: Opprett ny lege");
@@ -495,28 +501,26 @@ public class Main {
                     lege = lagNyLegeLokke();
                     break;
                 case 1: // Finn eksisterende
-                    System.out.print("Navn paa utskrivende lege > Dr. ");
-                    String navn = skanString();
+                    System.out.println("\nVelg lege:");
+                    skrivUtLeger();
+                    System.out.print("> ");
+                    valg = skanInt();
 
-                    // Stor foerstebokstav
-                    navn = "Dr. " + navn.substring(0, 1).toUpperCase()
-                            + navn.substring(1);
-
-                    // Finn lege fra navn
+                    // Finn lege fra indeks
+                    int teller = 0;
                     boolean funnet = false;
                     for (Lege l : legeListe) {
-                        if (l.hentNavn().toLowerCase()
-                                .equals(navn.toLowerCase())) {
+                        if (teller == valg) {
                             lege = l;
                             funnet = true;
                             break;
                         }
+                        teller++;
                     }
 
-                    // Fant ikke lege; gaa tilbake til forrige meny
+                    // Fant ikke pasient fra indeks; proev igjen
                     if (!funnet) {
-                        System.out.println("\nFant ikke lege med navn: " + navn
-                                + ", sjekk at det er riktig navn");
+                        ugyldigInput();
                         continue;
                     }
                     break;
@@ -530,10 +534,13 @@ public class Main {
             }
 
             // SJEKK SPESIALIST-KODE HVIS LEGEMIDDEL ER NARKOTISK
-            if (legemiddel instanceof Narkotisk) {
-                if (!haandterKontrollKode(lege)) { // Ikke faat godkjent kode
-                    throw (new TilbakeSignal("Ikke godkjent kontrollkode"));
-                }
+            if (legemiddel instanceof Narkotisk
+                    && !haandterKontrollKode(lege)) {
+                System.out.println("Lege '" + lege.hentNavn()
+                        + "' har enten ikke godkjenning til aa skrive ut dette legemiddelet'"
+                        + legemiddel.hentNavn()
+                        + "', eller saa er gitt kontrollkode feil.");
+                throw (new TilbakeSignal("Ikke godkjent lege/kontrollkode"));
             }
 
             // PASIENT
@@ -552,28 +559,19 @@ public class Main {
                     pasient = lagNyPasientLokke();
                     break;
                 case 1: // Finn eksisterende
-                    System.out.print("Navn paa pasient > ");
-                    String navn = (skanString()).trim();
+                    System.out.println("Velg pasient:");
+                    skrivUtPasienter();
+                    System.out.print("> ");
+                    valg = skanInt();
 
-                    // Stor foerstebokstav
-                    navn = navn.substring(0, 1).toUpperCase()
-                            + navn.substring(1);
-
-                    // Finn pasient fra navn
-                    boolean funnet = false;
-                    for (Pasient pas : pasientListe) {
-                        if (pas.hentNavn().toLowerCase()
-                                .equals(navn.toLowerCase())) {
-                            pasient = pas;
-                            funnet = true;
-                            break;
-                        }
+                    // Finn pasient fra indeks
+                    try {
+                        pasient = pasientListe.hent(valg);
                     }
 
-                    // Fant ikke pasient; gaa tilbake til forrige meny
-                    if (!funnet) {
-                        System.out.println("\nFant ikke pasient med navn: "
-                                + navn + ", sjekk at det er riktig navn");
+                    // Fant ikke pasient fra indeks; proev igjen
+                    catch (UgyldigListeindeks e) {
+                        ugyldigInput();
                         continue;
                     }
                     break;
@@ -701,11 +699,9 @@ public class Main {
     }
 
     /* Kommandoloekke for aa skrive ut objektliste */
-    private static void objektKommandolokke() {
+    private static void skrivObjekterKommandolokke() {
         int valg;
-        boolean run = true;
-
-        while (run) {
+        while (true) {
             System.out.println("\nTilbake til hovedmeny:");
             System.out.println("[...]\n");
             System.out.println("Velg objekt for fullstendig oversikt:");
@@ -755,6 +751,88 @@ public class Main {
         }
     }
 
+    private static void brukReseptKommandoLokke() {
+        int valg;
+        Pasient pasient;
+        while (true) {
+            try {
+                System.out.println("\nTilbake:\n[...]\n");
+                System.out.println("Hvilken pasient vil du se resepter for?");
+                skrivUtPasienter();
+                System.out.print("> ");
+                valg = skanInt();
+
+                // Finn pasient fra indeks
+                try {
+                    pasient = pasientListe.hent(valg);
+                }
+
+                // Fant ikke pasient fra indeks; proev igjen
+                catch (UgyldigListeindeks e) {
+                    ugyldigInput();
+                    continue;
+                }
+
+                // Fant pasient: gaa videre
+                try {
+                    if (pasient.hentReseptListe().stoerrelse() == 0) {
+                        System.out.println("Pasient '" + pasient.hentNavn()
+                                + "' har ingen resepter");
+                        throw (new TilbakeSignal(
+                                "Pasient hadde ingen resepter aa bruke"));
+                    }
+                    while (true) {
+                        System.out.println("\nTilbake:\n[...]\n");
+                        System.out.println("Hvilken resept vil du bruke?");
+                        skrivUtResepter(pasient);
+                        System.out.print("> ");
+                        valg = skanInt();
+
+                        // Hent resept fra indeks
+                        try {
+                            IndeksertListe<Resept> liste = (IndeksertListe<Resept>) pasient
+                                    .hentReseptListe();
+                            Resept resept = liste.hent(valg);
+
+                            if (resept.bruk()) {
+                                System.out.println("Brukte valgt resept paa '"
+                                        + resept.hentLegemiddel().hentNavn()
+                                        + "', ny reit=" + resept.hentReit());
+                            } else {
+                                System.out.println(
+                                        "Kunne ikke bruke valgt resept paa '"
+                                                + resept.hentLegemiddel()
+                                                        .hentNavn()
+                                                + "' (ingen gjenvarende reit)");
+                            }
+                        }
+
+                        // Fant ikke resept fra indeks; proev igjen
+                        catch (UgyldigListeindeks e) {
+                            ugyldigInput();
+                            continue;
+                        }
+
+                    }
+
+                }
+
+                // TILBAKE TIL PASIENTLISTE-VALG
+                catch (TilbakeSignal e) {
+                    continue;
+                }
+
+            }
+
+            // TILBAKE TIL HOVEDMENY
+            catch (TilbakeSignal e) {
+                return;
+            }
+
+        }
+
+    }
+
     /* Hovedmeny kommandoloekke */
     private static void hovedKommandoLokke() {
         int valg;
@@ -773,28 +851,33 @@ public class Main {
 
             try {
                 valg = skanInt();
-
-                switch (valg) {
-                // 0: Avslutt program
-                case 0:
-                    System.out.println("Avslutter program...\n");
-                    return;
-                // 1: Fullstendig objekt-oversikt
-                case 1:
-                    System.out.println("Antall objekter:");
-                    skrivUtAntallObjekter();
-                    objektKommandolokke();
-                    break;
-                // 2: Opprett nytt objekt
-                case 2:
-                    lagObjektKommandolokke();
-                    break;
-                default:
-                    ugyldigInput();
-                }
-            } catch (TilbakeSignal e) {
-                continue;
             }
+
+            // Avslutt
+            catch (TilbakeSignal e) {
+                System.out.println("Avslutter program...\n");
+                return;
+            }
+
+            switch (valg) {
+            case 0: // 0: Avslutt program
+                System.out.println("Avslutter program...\n");
+                return;
+            case 1: // 1: Fullstendig objekt-oversikt
+                System.out.println("Antall objekter:");
+                skrivUtAntallObjekter();
+                skrivObjekterKommandolokke();
+                break;
+            case 2: // 2: Opprett nytt objekt
+                lagObjektKommandolokke();
+                break;
+            case 3: // 3: Bruk en resept for en pasient
+                brukReseptKommandoLokke();
+                break;
+            default:
+                ugyldigInput();
+            }
+
         }
     }
 }

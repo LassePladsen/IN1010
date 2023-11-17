@@ -38,6 +38,7 @@ public class Lege implements Comparable<Lege> {
             legemiddel.hentPris()
             );
             utskrevneResepter.leggTil(ny);
+            pasient.hentReseptListe().leggTil(ny);
             return ny;
         }
     
@@ -53,6 +54,7 @@ public class Lege implements Comparable<Lege> {
             legemiddel.hentPris()
             );
             utskrevneResepter.leggTil(ny);
+            pasient.hentReseptListe().leggTil(ny);
             return ny;
         }
     
@@ -69,6 +71,7 @@ public class Lege implements Comparable<Lege> {
             legemiddel.hentPris()
             );
             utskrevneResepter.leggTil(ny);
+            pasient.hentReseptListe().leggTil(ny);
             return ny;
         }
     
@@ -85,6 +88,7 @@ public class Lege implements Comparable<Lege> {
             legemiddel.hentPris()
             );
             utskrevneResepter.leggTil(ny);
+            pasient.hentReseptListe().leggTil(ny);
             return ny;
         }
 

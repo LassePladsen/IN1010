@@ -27,6 +27,7 @@ public class Spesialist extends Lege implements Godkjenningsfritak {
         BlaaResept ny = new BlaaResept(legemiddel, this, pasient, reit,
                 legemiddel.hentPris());
         hentUtskrevneResepter().leggTil(ny);
+        pasient.hentReseptListe().leggTil(ny);
         return ny;
     }
 }
