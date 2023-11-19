@@ -270,6 +270,7 @@ public class Main {
                     + spes.hentNavn() + "':");
             while (true) {
                 System.out.print("Kontrollkode > ");
+                in.nextLine();
                 try {
                     String kode = skanString();
 
@@ -602,6 +603,7 @@ public class Main {
                         reit = skanInt();
 
                         ny = lege.skrivBlaaResept(legemiddel, pasient, reit);
+                        reseptListe.leggTil(ny);
                         System.out.println(
                                 "\nOpprettet ny blaa resept for legemiddelet '"
                                         + legemiddel.hentNavn()
@@ -614,6 +616,7 @@ public class Main {
                         System.out.print("Reit (heltall) > ");
                         reit = skanInt();
                         ny = lege.skrivHvitResept(legemiddel, pasient, reit);
+                        reseptListe.leggTil(ny);
                         System.out.println(
                                 "\nOpprettet ny hvit resept for legemiddelet '"
                                         + legemiddel.hentNavn()
@@ -626,6 +629,7 @@ public class Main {
                         System.out.print("Reit (heltall) > ");
                         reit = skanInt();
                         ny = lege.skrivPResept(legemiddel, pasient, reit);
+                        reseptListe.leggTil(ny);
                         System.out.println(
                                 "\nOpprettet ny p-resept for legemiddelet '"
                                         + legemiddel.hentNavn()
@@ -636,6 +640,7 @@ public class Main {
                         return ny;
                     case 3: // 3: Militaer
                         ny = lege.skrivMilResept(legemiddel, pasient);
+                        reseptListe.leggTil(ny);
                         System.out.println(
                                 "\nOpprettet ny militaer resept for legemiddelet '"
                                         + legemiddel.hentNavn()
@@ -833,6 +838,134 @@ public class Main {
 
     }
 
+    private static void skrivUtNarkotikaMisbrukKommandolokke() {
+        int valg;
+        int antallNarkotiske;
+        Liste<Resept> resepter;
+        while (true) {
+            System.out.println("\nTilbake:");
+            System.out.println("[...]\n");
+            System.out.println("Velg narkotisk-misbruk statistikk:");
+            System.out.println(
+                    "0: Alle leger som har skrevet ut minst én resept på narkotiske legemidler");
+            System.out.println(
+                    "1: Alle pasienter som har minst én gyldig resept på narkotiske legemidler");
+            System.out.print("> ");
+
+            try {
+                valg = skanInt();
+                switch (valg) {
+                case 0: // liste over leger med minst én narkotisk resept
+                    System.out.println(
+                            "\nNavn paa lege: antall utskrevne resepter paa narkotiske legemidler");
+
+                    // Loop over leger
+                    for (Lege l : legeListe) {
+                        // Tell narkotiske resepter
+                        antallNarkotiske = 0;
+                        resepter = l.hentUtskrevneResepter();
+                        for (Resept rs : resepter) {
+                            if (rs.hentLegemiddel() instanceof Narkotisk) {
+                                antallNarkotiske++;
+                            }
+                        }
+
+                        if (antallNarkotiske == 0) {
+                            continue;
+                        }
+
+                        System.out.println(
+                                "- " + l.hentNavn() + ": " + antallNarkotiske);
+                    }
+                    break;
+                case 1: // liste over pasienter med minst én narkotisk resept
+                    System.out.println(
+                            "\nNavn paa pasient: antall resepter paa narkotiske legemidler");
+
+                    // Loop pasienter
+                    for (Pasient ps : pasientListe) {
+                        // Tell narkotiske resepter
+                        antallNarkotiske = 0;
+                        resepter = ps.hentReseptListe();
+                        for (Resept rs : resepter) {
+                            if (rs.hentLegemiddel() instanceof Narkotisk) {
+                                antallNarkotiske++;
+                            }
+                        }
+
+                        if (antallNarkotiske == 0) {
+                            continue;
+                        }
+
+                        System.out.println(
+                                "- " + ps.hentNavn() + ": " + antallNarkotiske);
+                    }
+                    break;
+                }
+            }
+
+            // TILBAKE TIL STATISTIKK-MENY
+            catch (TilbakeSignal e) {
+                return;
+            }
+        }
+
+    }
+
+    private static void skrivUtStatistikkKommandolokke() {
+        int valg;
+
+        while (true) {
+            System.out.println("\nTilbake til hovedmeny:");
+            System.out.println("[...]\n");
+            System.out.println("Velg statistikk:");
+            System.out.println(
+                    "0: Antall utskrevne resepter paa de forskjellige type legemidler");
+            System.out.println("1: Misbruk av narkotiske midler");
+            System.out.print("> ");
+
+            try {
+                valg = skanInt();
+                switch (valg) {
+                case 0: // 0: Antall resepter paa de forskjellige type
+                        // legemidler
+                    int antallVanlig = 0;
+                    int antallVanedannende = 0;
+                    int antallNarkotiske = 0;
+
+                    // Tell antall av hver
+                    for (Resept rs : reseptListe) {
+                        Legemiddel lm = rs.hentLegemiddel();
+                        if (lm instanceof Vanlig) {
+                            antallVanlig++;
+                        } else if (lm instanceof Vanedannende) {
+                            antallVanedannende++;
+                        } else if (lm instanceof Narkotisk) {
+                            antallNarkotiske++;
+                        }
+                    }
+
+                    System.out.println("\nResepter paa vanlige legemidler: "
+                            + antallVanlig);
+                    System.out.println("Resepter paa vanedannende legemidler: "
+                            + antallVanedannende);
+                    System.out.println("Resepter paa narkotiske legemidler: "
+                            + antallNarkotiske);
+                    break;
+                case 1: // 1: Misbruk av narkotiske midler
+                    skrivUtNarkotikaMisbrukKommandolokke();
+                    break;
+                }
+            }
+
+            // TILBAKE TIL HOVEDMENY
+            catch (TilbakeSignal e) {
+                return;
+            }
+
+        }
+    }
+
     /* Hovedmeny kommandoloekke */
     private static void hovedKommandoLokke() {
         int valg;
@@ -873,6 +1006,9 @@ public class Main {
                 break;
             case 3: // 3: Bruk en resept for en pasient
                 brukReseptKommandoLokke();
+                break;
+            case 4: // 4: Skriv ut statistikk
+                skrivUtStatistikkKommandolokke();
                 break;
             default:
                 ugyldigInput();
