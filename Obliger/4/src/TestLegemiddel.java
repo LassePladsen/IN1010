@@ -4,12 +4,12 @@ public class TestLegemiddel {
         Vanedannende vanedannende = new Vanedannende("Vanedannende", 20, 0.8, 10);
         Narkotisk narkotisk = new Narkotisk("Narkotisk", 100, 0.2, 20);
 
-        assert (0 == vanlig.id) :
-            "Vanlig id er ikke " + 0 + ", men " + vanlig.id;
-        assert (1 == vanedannende.id) :
-            "Vanedannende id er ikke " + 1 + ", men " + vanedannende.id;
-        assert (2 == narkotisk.id) :
-            "Narkotisk id er ikke " + 2 + ", men " + narkotisk.id;
+        assert (0 == vanlig.hentId()) :
+            "Vanlig id er ikke " + 0 + ", men " + vanlig.hentId();
+        assert (1 == vanedannende.hentId()) :
+            "Vanedannende id er ikke " + 1 + ", men " + vanedannende.hentId();
+        assert (2 == narkotisk.hentId()) :
+            "Narkotisk id er ikke " + 2 + ", men " + narkotisk.hentId();
 
         assert (vanlig.hentPris() == 10) :
             "Vanlig.hentPris() returnerer ikke riktig verdi";

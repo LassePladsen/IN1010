@@ -18,9 +18,9 @@ public class Testing {
         // if ((boolean) "awad") { 
         //     System.out.println("JA")
         // }
-        Scanner sk = new Scanner(System.in);
-        String b = sk.next();
-        int a = Integer.parseInt(b);
+        // Scanner sk = new Scanner(System.in);
+        // String b = sk.next();
+        // int a = Integer.parseInt(b);
 
     }
 }

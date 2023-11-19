@@ -24,5 +24,5 @@ Stoff(repetisjon) ish sett gjennom
 Ikke gjort noe av den eksamen 2012 oppgaven 
 
 Uke 9 
-oblig 4 tom. del E5
+Ferdig
 
