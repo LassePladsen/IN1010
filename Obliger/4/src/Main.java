@@ -1,5 +1,7 @@
 import java.io.File;
+import java.io.FileWriter;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import javax.naming.NameNotFoundException;
@@ -14,7 +16,7 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            lesObjekterFraFil(new File("../data/legedata.txt"));
+            lesObjekterFraFil(new File("../data/legedata-stor.txt"));
         } catch (NameNotFoundException | UlovligUtskrift e) {
         } catch (FileNotFoundException e) {
         }
@@ -77,9 +79,7 @@ public class Main {
                 // Kontrollid = 0 -> vanlig lege
                 if (kontrollId.equals("0")) {
                     legeListe.leggTil(new Lege(navn));
-                }
-                // Kontrollid =/= 0 -> spesialist
-                else {
+                } else { // Kontrollid =/= 0 -> spesialist
                     legeListe.leggTil(new Spesialist(navn, kontrollId));
                 }
                 break;
@@ -966,6 +966,148 @@ public class Main {
         }
     }
 
+    private static File lagFil(String filnavn) {
+        // Standard filnavn
+        if (filnavn.equals("")) {
+            filnavn = "utLegedata.txt";
+        }
+
+        File fil = new File(filnavn);
+
+        String suksessmld = "\nSkrev data til fil: '" + filnavn + "'";
+        try {
+            if (fil.createNewFile()) {
+                System.out.println(suksessmld);
+                return fil;
+            } else {
+                System.out.print("\nFil '" + filnavn
+                        + "' eksiterer allerede, overskriv? [Y/N]\n> ");
+                String svar = skanString();
+                switch (svar.toUpperCase()) {
+                case "Y": // overskriv fil
+                    if (fil.delete()) {
+                        if (fil.createNewFile()) {
+                            System.out.println(suksessmld);
+                            return fil;
+                        }
+                    }
+                    System.out.println(
+                            "\nKlarte fortsatt ikke aa lage fil, ukjent feil... gaar tilbake til hovedmeny");
+                    return null;
+                case "N": // ikke overskriv -> tilbake til hovedmeny
+                    System.out.println("Avbryter lagring til fil...");
+                    return null;
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("\nKlarte ikke aa skrive fil '" + filnavn
+                    + "', errormelding: " + e
+                    + "\nGaar tilbake til hovedmeny...");
+            return null;
+        }
+
+        // AVBRYT, TILBAKE TIL HOVEDMENY
+        catch (TilbakeSignal e) {
+            return null;
+        }
+        return null;
+    }
+
+    private static void skrivDataTilFil() {
+        try {
+            System.out.print("\nFilnavn > ");
+            in.nextLine();
+            String filnavn = "../data/" + skanString().trim();
+            File fil = lagFil(filnavn);
+
+            if (fil == null) {
+                return;
+            }
+
+            try {
+                FileWriter ut = new FileWriter(fil);
+
+                // Skriv pasientliste
+                ut.write("# Pasienter (navn,fnr)\n");
+                for (Pasient ps : pasientListe) {
+                    ut.write(ps.hentNavn() + "," + ps.hentFodsNr() + "\n");
+                }
+
+                // Skriv legemiddelliste
+                ut.write("# Legemidler (navn,type,pris,virkestoff[,styrke])\n");
+                String type;
+                String styrke;
+                for (Legemiddel lm : legemiddelListe) {
+                    if (lm instanceof Vanlig) {
+                        type = "vanlig";
+                        styrke = "";
+                    } else if (lm instanceof Vanedannende) {
+                        type = "vanedannende";
+                        styrke = "" + ((Vanedannende) lm).hentStyrke();
+                    } else if (lm instanceof Narkotisk) {
+                        type = "narkotisk";
+                        styrke = "" + ((Narkotisk) lm).hentStyrke();
+                    } else { // bare i tilfelle
+                        type = "";
+                        styrke = "";
+                    }
+
+                    ut.write(lm.hentNavn() + "," + type + "," + lm.hentPris()
+                            + "," + lm.hentVirkestoff());
+                    if (!styrke.equals("")) {
+                        ut.write("," + styrke);
+                    }
+                    ut.write("\n");
+                }
+
+                // Skriv legeliste
+                ut.write("# Leger (navn,kontrollid / 0 hvis vanlig lege)\n");
+                String kontrollid;
+                for (Lege lg : legeListe) {
+                    if (lg instanceof Spesialist) {
+                        kontrollid = "" + ((Spesialist) lg).hentKontrollkode();
+                    } else {
+                        kontrollid = "0";
+                    }
+                    ut.write(lg.hentNavn() + "," + kontrollid + "\n");
+                }
+
+                // Skriv reseptliste
+                ut.write(
+                        "# Resepter (legemiddelNummer,legeNavn,pasientID,type,[reit])\n");
+                for (Resept rs : reseptListe) {
+                    if (rs instanceof BlaaResept) {
+                        type = "blaa";
+                    } else if (rs instanceof MilResept) {
+                        type = "militaer";
+                    } else if (rs instanceof PResept) {
+                        type = "p";
+                    } else { // vanlig HvitResept
+                        type = "hvit";
+                    }
+                    ut.write(rs.hentLegemiddel().hentId() + ","
+                            + rs.hentLege().hentNavn() + ","
+                            + rs.hentPasientId() + "," + type);
+
+                    if (!type.equals("militaer")) {
+                        ut.write("," + rs.hentReit());
+                    }
+                    ut.write("\n");
+                }
+                ut.close();
+
+            } catch (IOException e) {
+                System.out.println("I/O error ved aa skrive til fil '" + fil
+                        + "' for aa skrive ut data til, gaar tilbake til hovedmeny...");
+            }
+
+        }
+        // Avbryt, tilbake til hovedmeny
+        catch (TilbakeSignal e) {
+        }
+
+    }
+
     /* Hovedmeny kommandoloekke */
     private static void hovedKommandoLokke() {
         int valg;
@@ -1009,6 +1151,9 @@ public class Main {
                 break;
             case 4: // 4: Skriv ut statistikk
                 skrivUtStatistikkKommandolokke();
+                break;
+            case 5: // 5: Skriv all data til fil
+                skrivDataTilFil();
                 break;
             default:
                 ugyldigInput();
