@@ -133,7 +133,7 @@ public class Main {
         scanner.close();
     }
 
-    /* Skriver ut oversikt over hvor mange elementer i hver kategori */
+    /** Skriver ut oversikt over hvor mange elementer i hver kategori */
     private static void skrivUtAntallObjekter() {
         System.out.println("Pasienter:  " + pasientListe.stoerrelse());
         System.out.println("Legemidler: " + legemiddelListe.stoerrelse());
@@ -141,7 +141,7 @@ public class Main {
         System.out.println("Resepter:   " + reseptListe.stoerrelse());
     }
 
-    /* skriver ut liste over alle pasienter */
+    /** skriver ut liste over alle pasienter */
     private static void skrivUtPasienter() {
         for (Pasient x : pasientListe) {
             System.out.println(x.hentId() + ": " + x.hentNavn() + " (fnr "
@@ -149,7 +149,7 @@ public class Main {
         }
     }
 
-    /* Skriver ut liste all legemidler */
+    /** Skriver ut liste all legemidler */
     private static void skrivUtLegemidler() {
         for (Legemiddel x : legemiddelListe) {
             if (x instanceof Narkotisk) {
@@ -169,7 +169,7 @@ public class Main {
         }
     }
 
-    /* Skriver ut liste over alle leger i alfabetisk (leksikonsk) rekkefølge */
+    /** Skriver ut liste over alle leger i alfabetisk (leksikonsk) rekkefølge */
     private static void skrivUtLeger() {
         int teller = 0;
         for (Lege x : legeListe) {
@@ -178,7 +178,7 @@ public class Main {
         }
     }
 
-    /* Skriver ut liste over alle resepter globalt */
+    /** Skriver ut liste over alle resepter globalt */
     private static void skrivUtResepter() {
         for (Resept x : reseptListe) {
             System.out.println(x.hentId() + ": " + x.hentLegemiddel().hentNavn()
@@ -186,7 +186,7 @@ public class Main {
         }
     }
 
-    /* Skriver ut liste over alle resepter FOR EN GITT PASIENT */
+    /** Skriver ut liste over alle resepter FOR EN GITT PASIENT */
     private static void skrivUtResepter(Pasient pasient) {
         int teller = 0;
         for (Resept x : pasient.hentReseptListe()) {
@@ -196,7 +196,7 @@ public class Main {
         }
     }
 
-    /* Haandterer Scanner positiv int input */
+    /** Haandterer Scanner positiv int input */
     private static int skanInt() throws TilbakeSignal {
         String valg = "";
         while (true) {
@@ -219,7 +219,7 @@ public class Main {
         }
     }
 
-    /* Haandterer Scanner positiv double input */
+    /** Haandterer Scanner positiv double input */
     private static double skanDouble() throws TilbakeSignal {
         String valg = "";
         while (true) {
@@ -242,7 +242,7 @@ public class Main {
         }
     }
 
-    /* Haandterer Scanner String input */
+    /** Haandterer Scanner String input */
     private static String skanString() throws TilbakeSignal {
         String valg;
         while (true) {
@@ -663,7 +663,7 @@ public class Main {
         }
     }
 
-    /* Kommandoloekke for aa lage nye objekter */
+    /** Kommandoloekke for aa lage nye objekter */
     private static void lagObjektKommandolokke() {
         int valg;
 
@@ -703,7 +703,7 @@ public class Main {
         }
     }
 
-    /* Kommandoloekke for aa skrive ut objektliste */
+    /** Kommandoloekke for aa skrive ut objektliste */
     private static void skrivObjekterKommandolokke() {
         int valg;
         while (true) {
@@ -1108,7 +1108,7 @@ public class Main {
 
     }
 
-    /* Hovedmeny kommandoloekke */
+    /** Hovedmeny kommandoloekke */
     private static void hovedKommandoLokke() {
         int valg;
 
