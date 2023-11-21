@@ -23,6 +23,12 @@ Uke 8
 Stoff(repetisjon) ish sett gjennom
 Ikke gjort noe av den eksamen 2012 oppgaven 
 
-Uke 9 
+Uke 9 - TRÅDER
 Ferdig
 
+Uke 10 - TRÅDER
+Sett forelesning
+
+Uke 11 - GUI
+Ferdig med forelesning og trix
+Må gjøre oblig 5 nå
