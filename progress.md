@@ -31,4 +31,4 @@ Sett forelesning
 s
 Uke 11 - GUI
 Ferdig med forelesning og trix
-Oblig 5 delvis inn i opgv 5
+Oblig 5 tom opgv 10, sitter fast 

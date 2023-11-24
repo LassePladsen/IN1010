@@ -1,21 +1,25 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class Oblig5Del1 {
-    private static SubsekvensRegister register = new SubsekvensRegister();
+public class Oblig5Del2B {
+    private static Monitor2 monitor = new Monitor2();
 
     public static void testOppgave3og4(String mappe) {
         // Finn filer som skal leses
         String metafil = mappe + "/metadata.csv";
+        ArrayList<LeseTrad2> trader = new ArrayList<>();
         try {
             Scanner skanner = new Scanner(new File(metafil));
             // Loop over filer som skal leses, les og legg hashmap til
             // registeret
             while (skanner.hasNextLine()) {
                 String fil = mappe + "/" + skanner.nextLine();
-                register.settInn(SubsekvensRegister.lesFraFil(fil));
+                LeseTrad2 trad = new LeseTrad2(fil, monitor);
+                trad.start();
+                trader.add(trad);
             }
         } catch (FileNotFoundException e) {
             System.out.println("Fant ikke metadatafilen: " + metafil);
@@ -24,31 +28,21 @@ public class Oblig5Del1 {
 
         // Flett alle hashmap sammen
         while (true) {
-            if (register.stoerrelse() == 1) {
+            if (monitor.stoerrelse() == 1) {
                 break;
             }
-            HashMap<String, Subsekvens> test1 = register.taUt();
-            // test1.values();
-            HashMap<String, Subsekvens> test2 = register.taUt();
-            // test2.values();
-            // System.out.println(test1);
-            // System.out.println();
-            // System.out.println(test2);
-            // System.out.println();
+            HashMap<String, Subsekvens> test1 = monitor.taUt();
+            HashMap<String, Subsekvens> test2 = monitor.taUt();
             HashMap<String, Subsekvens> testflett = SubsekvensRegister
                     .flett(test1, test2);
-            // testflett.values();
-            // System.out.println(testflett);
-            // System.out.println("\n");
-            register.settInn(testflett);
+            monitor.settInn(testflett);
         }
 
         // Skriv ut subsekvensen med flest forekomster
         Subsekvens flestSekvens = null;
         int flest = 0;
-        HashMap<String, Subsekvens> map = register.taUt();
+        HashMap<String, Subsekvens> map = monitor.taUt();
         for (Subsekvens sekvens : map.values()) {
-            // System.out.print(sekvens);
             if (sekvens.hentAntall() > flest) {
                 flestSekvens = sekvens;
                 flest = sekvens.hentAntall();
