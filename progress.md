@@ -28,7 +28,7 @@ Ferdig
 
 Uke 10 - TRÅDER
 Sett forelesning
-
+s
 Uke 11 - GUI
 Ferdig med forelesning og trix
-Må gjøre oblig 5 nå
+Oblig 5 delvis inn i opgv 5
