@@ -1,0 +1,18 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "SubsekvensRegister",
+            "request": "launch",
+            "mainClass": "SubsekvensRegister",
+            "projectName": "IN1010_2c5f99e0"
+        },
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}",
+            "cwd": "${workspaceFolder}\\Obliger\\5\\src"
+        }
+    ]
+}
