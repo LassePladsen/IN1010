@@ -29,13 +29,16 @@ public class Oblig5Del1 {
                 break;
             }
             HashMap<String, Subsekvens> test1 = register.taUt();
+            // test1.values();
             HashMap<String, Subsekvens> test2 = register.taUt();
+            // test2.values();
             // System.out.println(test1);
             // System.out.println();
             // System.out.println(test2);
             // System.out.println();
             HashMap<String, Subsekvens> testflett = SubsekvensRegister
                     .flett(test1, test2);
+            // testflett.values();
             // System.out.println(testflett);
             // System.out.println("\n");
             register.settInn(testflett);
@@ -84,8 +87,8 @@ public class Oblig5Del1 {
     }
 
     public static void main(String[] args) {
-        // testOppgave3og4("../TestDataLike");
-        testOppgave3og4("../TestDataLitenLike");
         testFlett();
+        testOppgave3og4("../TestDataLike");
+        testOppgave3og4("../TestDataLitenLike");
     }
 }
