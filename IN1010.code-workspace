@@ -6,5 +6,19 @@
   ],
   "settings": {
     "java.format.settings.url": ".vscode/java-formatter.xml"
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "java",
+        "name": "Launch Current File",
+        "request": "launch",
+        "mainClass": "${file}",
+        // "cwd": "${workspaceFolder}\\Obliger\\5\\src"
+        "cwd": "${filefolder}"
+      }
+      
+    ]
   }
 }
