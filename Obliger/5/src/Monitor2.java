@@ -6,8 +6,8 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Monitor2 {
     private SubsekvensRegister beholder = new SubsekvensRegister();
     private ReentrantLock laas = new ReentrantLock();
-    private Condition harTo = laas.newCondition();
-    private Condition ferdig = laas.newCondition();
+    private Condition ikkeTom = laas.newCondition();
+    private boolean erFerdig = false;
 
     /** Setter inn et hashmap i indeks 0 */
     public void settInn(HashMap<String, Subsekvens> ny) {
@@ -15,10 +15,8 @@ public class Monitor2 {
         try {
             beholder.settInn(ny);
         } finally {
+            ikkeTom.signal();
             laas.unlock();
-            if (stoerrelse() >= 2) {
-                harTo.signal();
-            }
         }
     }
 
@@ -28,31 +26,19 @@ public class Monitor2 {
         try {
             beholder.settInn(indeks, ny);
         } finally {
+            ikkeTom.signal();
             laas.unlock();
-            if (stoerrelse() >= 2) {
-                harTo.signal();
-            }
         }
     }
 
     /** Tar ut et hashmap ved indeks 0 */
     public HashMap<String, Subsekvens> taUt() {
-        laas.lock();
-        try {
-            return beholder.taUt();
-        } finally {
-            laas.unlock();
-        }
+        return beholder.taUt();
     }
 
     /** Tar ut et hashmap ved gitt indeks */
     public HashMap<String, Subsekvens> taUt(int indeks) {
-        laas.lock();
-        try {
-            return beholder.taUt(indeks);
-        } finally {
-            laas.unlock();
-        }
+        return beholder.taUt(indeks);
     }
 
     /** Gir totalt antall subsekvenser */
@@ -63,15 +49,19 @@ public class Monitor2 {
     /** Henter ut to hashmap */
     public ArrayList<HashMap<String, Subsekvens>> taUtTo() {
         ArrayList<HashMap<String, Subsekvens>> ut = new ArrayList<>();
-        if (stoerrelse() < 2) {
-            try {
-                harTo.await();
-                ut.add(taUt());
-                ut.add(taUt());
-            } catch (InterruptedException e) {
+        laas.lock();
+        try {
+            while (stoerrelse() < 2) {
+                ikkeTom.await();
             }
+            ut.add(taUt());
+            ut.add(taUt());
+            return ut;
+        } catch (InterruptedException e) {
+        } finally {
+            laas.unlock();
         }
-        return ut;
+        return null;
     }
 
     public void settInnFlettet(HashMap<String, Subsekvens> ny) {
@@ -79,10 +69,16 @@ public class Monitor2 {
         try {
             beholder.settInn(ny);
         } finally {
+            ikkeTom.signal();
             laas.unlock();
-            if (stoerrelse() >= 2) {
-                harTo.signal();
-            }
         }
+    }
+
+    public boolean erFerdig() {
+        return erFerdig;
+    }
+
+    public void settFerdig() {
+        erFerdig = true;
     }
 }
