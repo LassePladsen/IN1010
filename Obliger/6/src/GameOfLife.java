@@ -27,25 +27,32 @@ public class GameOfLife {
     }
 
     public static void main(String[] args) {
-        if (args.length != 3) {
+        System.out.println(args.length);
+        if (args.length == 0) {
             // Standard som 8x12 gui
             int rader = 8;
             int kolonner = 12;
             startGUI(rader, kolonner);
-        } else {
-
-            int antallRader = Integer.parseInt(args[0]);
-            int antallKolonner = Integer.parseInt(args[1]);
+        } else if (args.length == 2) {
+            // Standard gui med funnet rader og kolonner 
+            int rader = Integer.parseInt(args[0]);
+            int kolonner = Integer.parseInt(args[1]);
+            startGUI(rader, kolonner);
+        } else if (args.length == 3) {
+            int rader = Integer.parseInt(args[0]);
+            int kolonner = Integer.parseInt(args[1]);
             String metode = args[2];
 
             if (metode.toLowerCase().equals("gui")) { // oblig 6 gui
-                startGUI(antallRader, antallKolonner);
+                startGUI(rader, kolonner);
 
             } else if (metode.toLowerCase().equals("cmd")) { // oblig 1 terminal
-                startTerminal(antallRader, antallKolonner);
+                startTerminal(rader, kolonner);
             } else {
                 feilbruk();
             }
+        } else {
+            feilbruk();
         }
     }
 }

@@ -35,4 +35,8 @@ public class Verden {
 
         genNr++;
     }
+
+    public Rutenett hentRutenett() {
+        return rutenett;
+    }
 }
