@@ -1,10 +1,9 @@
 public class Celle {
     private Celle[] naboer = new Celle[8];
-    private int ledigIndeks = 0;  // neste ledige indeks for array naboer
+    private int ledigIndeks = 0; // neste ledige indeks for array naboer
     public int antNaboer = 0;
     public int antLevendeNaboer = 0;
-    public boolean levende = false;  // 0 = dead, 1 = alive
-    
+    public boolean levende = false; // 0 = dead, 1 = alive
 
     public void settDoed() {
         levende = false;
@@ -25,7 +24,16 @@ public class Celle {
             return '.';
         }
     }
-    
+
+    // For gui bruk
+    public String konverterStatusTegn() {
+        if (levende) {
+            return "O";
+        } else {
+            return "";
+        }
+    }
+
     public void leggTilNabo(Celle nabo) {
         antNaboer++;
         naboer[ledigIndeks] = nabo;
@@ -45,7 +53,7 @@ public class Celle {
                 telling++;
             }
         }
-        
+
         antLevendeNaboer = telling;
     }
 
@@ -58,7 +66,7 @@ public class Celle {
             }
 
             // Overpopulasjon: drep celle
-            else if (antLevendeNaboer > 3){
+            else if (antLevendeNaboer > 3) {
                 settDoed();
             }
         }
@@ -71,12 +79,11 @@ public class Celle {
             }
         }
     }
-    
 
     // public Celle() {
-    // }  
+    // }
 
     // public void settAntLevendeNaboer(int val) {
-    //     antLevendeNaboer = val;
+    // antLevendeNaboer = val;
     // }
 }

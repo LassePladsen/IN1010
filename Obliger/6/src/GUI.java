@@ -53,7 +53,7 @@ public class GUI {
         for (int i = 0; i < rader; i++) {
             for (int j = 0; j < kolonner; j++) {
                 celleKnapper[i][j].setText(
-                        "" + rutenett.hentCelle(i, j).hentStatusTegn());
+                        rutenett.hentCelle(i, j).konverterStatusTegn());
             }
         }
     }
@@ -140,7 +140,7 @@ public class GUI {
             Celle celle;
 
             CelleKnapp(Celle celle) {
-                super("" + celle.hentStatusTegn());
+                super(celle.konverterStatusTegn());
                 this.celle = celle;
                 super.addActionListener(new CelleKnappAction());
             }
@@ -154,7 +154,7 @@ public class GUI {
                     } else {
                         celle.settLevende();
                     }
-                    setText("" + celle.hentStatusTegn());
+                    setText(celle.konverterStatusTegn());
                 }
             }
         }
